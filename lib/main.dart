@@ -15,6 +15,12 @@ class CountContainer extends StatefulWidget {
 class _CountContainerState extends State<CountContainer> {
   var resultado = 0;
 
+  stateOperation(bool addOperation) {
+    setState(() {
+      resultado = mathButton(resultado, addOperation);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,26 +49,40 @@ class _CountContainerState extends State<CountContainer> {
         floatingActionButton:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Container(
-            margin: EdgeInsets.only(left: 40),
-            child: FloatingActionButton(
-                backgroundColor: Colors.grey[600],
-                onPressed: () {
-                  setState(() {
-                    if (resultado > 0) {
-                      resultado--;
-                    }
-                  });
-                },
-                child: Icon(Icons.remove)),
-          ),
-          FloatingActionButton(
-              backgroundColor: Colors.grey[600],
-              onPressed: () {
-                setState(() {
-                  resultado++;
-                });
-              },
-              child: Icon(Icons.add))
+              margin: EdgeInsets.only(left: 40),
+              child: FloatActionButton(
+                  icone: Icon(Icons.remove),
+                  onPress: () {
+                    stateOperation(false);
+                  })),
+          FloatActionButton(
+              icone: Icon(Icons.add),
+              onPress: () {
+                stateOperation(true);
+              }),
         ]));
   }
+}
+
+class FloatActionButton extends StatelessWidget {
+  final Icon icone;
+  final Function onPress;
+
+  FloatActionButton({Key key, this.icone, this.onPress}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+        backgroundColor: Colors.grey[600], onPressed: onPress, child: icone);
+  }
+}
+
+int mathButton(int number, bool addButton) {
+  if (addButton) {
+    number++;
+  } else {
+    number--;
+  }
+
+  return number;
 }
